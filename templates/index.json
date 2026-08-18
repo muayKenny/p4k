@@ -232,10 +232,53 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "pak_faq_1": {
+      "type": "pak-faq",
+      "blocks": {
+        "faq_1": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "How many chews should I give my dog?",
+            "answer": "Most dogs do well with 1–2 chews daily, based on weight. Full dosing guidance is included with every order."
+          }
+        },
+        "faq_2": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "How long until I see results?",
+            "answer": "Many pet parents notice a difference within 4–6 weeks, though timelines vary depending on your dog's condition and history."
+          }
+        },
+        "faq_3": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "Is it safe with other medications?",
+            "answer": "Our formula is generally well-tolerated alongside most medications, but we recommend checking with your vet if your dog is on prescription treatment."
+          }
+        },
+        "faq_4": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "What if it doesn't work for my dog?",
+            "answer": "You're covered by our 90-Day Money-Back Guarantee — if you don't see results, we'll refund you, no questions asked."
+          }
+        },
+        "faq_5": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "What breeds is this formulated for?",
+            "answer": "It's formulated for all dog breeds and sizes, with dosing calibrated by weight."
+          }
+        }
+      },
+      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4", "faq_5"],
+      "settings": {}
     }
   },
   "order": [
     "pak_hero_1",
-    "product_list_fa6P9H"
+    "product_list_fa6P9H",
+    "pak_faq_1"
   ]
 }

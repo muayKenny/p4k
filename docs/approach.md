@@ -6,20 +6,16 @@ Draft strategy doc for the Pets Are Kids senior Shopify dev assessment. This is 
 
 - Convert the Figma LP into a production-ready Shopify build. Mobile-first.
 - Quality over coverage: 1–2 sections built to a real production standard beats a rushed full page.
-- Base theme: Dawn (already scaffolded in this repo).
+- Base theme: Horizon (repo was re-scaffolded from Dawn to Horizon mid-build; see AI workflow notes below).
 - Deliverables: public GitHub repo, publicly viewable live preview (no password), short recording.
 - Recording must cover: judgment calls, reusability structure, how a non-technical teammate could use this with AI, how build speed was kept from becoming tech debt, how AI was used in the workflow.
 
 ## Scope decision
 
-**Open — needs a decision before starting build.**
+**Resolved.** Built two sections, deliberately chosen to be structurally different so the recording can show range rather than the same pattern twice:
 
-The Figma page has ~15 stacked sections (hero, trust badges, guarantee, ingredients, testimonials, FAQ, etc.). Candidates for the 1–2 sections to build to full production standard:
-
-- **Hero section** (`18:36` in Figma) — headline, rating line, CTA button, guarantee line, 3-icon trust row. Strongest CRO signal, most reusable across future LPs, good showcase of settings/blocks (icon row is a natural block type).
-- [Second section TBD — pick something structurally different from the hero to show range, e.g. testimonials or FAQ (accordion/block-heavy) rather than another static content block.]
-
-Recommendation: hero + one block-heavy section (testimonials or FAQ) — shows both "static content section done well" and "repeating block pattern done well" in one recording.
+- **Hero** (`sections/pak-hero.liquid`, Figma node `18:36`) — headline, rating line, CTA, guarantee, 3-icon trust row, before/after image comparison. Strongest CRO signal; showcases a static CTA rendered through Horizon's own stock `button` block, plus a real merchant-addable/reorderable block type for the trust icons.
+- **FAQ** (`sections/pak-faq.liquid`, Figma node `18:666`) — accordion built on native `<details>`/`<summary>`, zero custom JS. Showcases a pure repeating-block section (`pak-faq-item`) and a different technical pattern (disclosure/accordion) than the Hero.
 
 ## Technical approach
 
@@ -48,10 +44,12 @@ Track decisions made where the Figma/brief left things open, with the reasoning,
 - [x] **Small promo badge nearly missed** — first pass at cataloguing the hero's contents (before building) missed a floating "35% Off + Free Gifts" badge overlapping the before/after image pair (distinct from the top-of-page announcement bar, which has the same copy plus a countdown). Caught it re-reading the actual `get_design_context` output before building, not after. Added as its own optional section setting (`promo_badge_text`, blank to hide).
 - [x] **Static blocks excluded from `block_order`** — Shopify's schema validator rejects a static block id appearing in `block_order` (confirmed via the official `shopify-liquid` skill's `validate.mjs`). `block_order` only lists the dynamic/addable blocks (the trust icons); the static CTA button is rendered by its own explicit `content_for` call.
 - [x] **`templates/index.json` requires every section key to appear in `order`** — orphaning the old stock `hero_jVaWmY` entry (leaving it defined but unlisted) failed Shopify's real upload validation ("Section id must exist in order"), not just theme-check. Removed it outright rather than leaving dead data, since a page shouldn't ship two stacked hero-style sections anyway.
+- [x] **FAQ has no designed expanded state or answer copy** — the Figma only shows the 5 FAQ rows collapsed, with a "+" icon; there's no expanded/answer styling in the design at all, and no answer text. Built it as a native `<details>`/`<summary>` accordion (zero JS, accessible by default, `+`/`−` toggle via pure CSS), styled the expanded answer consistently with the page's existing muted body-copy treatment, and wrote placeholder answer copy myself using deliberately soft, non-overclaiming language ("many pet parents notice," not guaranteed outcomes) since this is a supplement product — reusing the same 90-day guarantee framing already established in the Hero for consistency.
 
 ## Keeping build speed from becoming tech debt
 
 - Run Lighthouse/PageSpeed against the dev preview before calling a section done — flag anything that regresses LCP/CLS (usually hero image loading strategy and web font loading).
+- **Gotcha worth remembering**: `{% content_for 'blocks' %}` auto-wraps every rendered theme block in its own `<div class="shopify-block">`. A sibling-combinator CSS rule (`.item + .item`) written inside the block file itself will silently never match, since the actual DOM siblings are the wrapper divs, not the block's own root element. Spacing between repeated blocks belongs on the parent container (flex/grid `gap`), not as inter-block margin — caught this in the FAQ section when spacing changes weren't showing up despite the CSS syncing correctly.
 - Lean on native `<img>` responsive attributes (`srcset`/`sizes`) and Shopify's `image_url` filters rather than hand-rolled breakpoints.
 - No new JS dependencies unless Dawn doesn't already solve the problem — check `assets/` for an existing pattern before writing a new script.
 - Liquid kept boring and readable over clever: favor straightforward `{% for block in section.blocks %}` loops over deep snippet nesting, since the brief explicitly says the muscle being tested is turning a design into a *clean* build fast, not a maximally abstracted one.
@@ -66,8 +64,8 @@ Track decisions made where the Figma/brief left things open, with the reasoning,
 
 ## Deliverables checklist
 
-- [ ] 1–2 sections built to production standard
-- [ ] Pushed to public GitHub repo
-- [ ] Live preview link, password removed / publicly viewable
+- [x] 1–2 sections built to production standard (Hero + FAQ, both validated and live-tested)
+- [ ] Pushed to public GitHub repo — remote connected (`github.com/muayKenny/p4k`), earlier commit pushed; this session's changes (FAQ section, docs updates) still need a commit + push
+- [ ] Live preview link, password removed / publicly viewable — dev store still has the storefront password gate on; needs to come off (or a password-bypass link shared) before sending the link
 - [ ] Recording: judgment calls, reusability structure, AI-enabled non-dev workflow, speed-vs-tech-debt process, AI usage in this build
 - [ ] This doc condensed into something short and readable to send alongside the recording
