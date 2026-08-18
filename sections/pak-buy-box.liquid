@@ -24,16 +24,17 @@
       <h2 class="pak-buy-box__heading">{{ section.settings.heading }}</h2>
     {%- endif -%}
 
-    <scroll-hint class="pak-buy-box__gallery">
+    <div class="pak-buy-box__main-photo">
+      {%- if section.settings.main_image -%}
+        {{ section.settings.main_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 400px, 90vw', class: 'pak-buy-box__main-photo-image' }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'pak-buy-box__main-photo-image pak-buy-box__gallery-image--placeholder' }}
+        <span class="pak-buy-box__gallery-caption">Main photo</span>
+      {%- endif -%}
+    </div>
+
+    <div class="pak-buy-box__gallery">
       <div class="pak-buy-box__gallery-track">
-        <div class="pak-buy-box__gallery-item pak-buy-box__gallery-item--main">
-          {%- if section.settings.main_image -%}
-            {{ section.settings.main_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 400px, 90vw', class: 'pak-buy-box__gallery-image' }}
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag: 'pak-buy-box__gallery-image pak-buy-box__gallery-image--placeholder' }}
-            <span class="pak-buy-box__gallery-caption">Main photo</span>
-          {%- endif -%}
-        </div>
         <div class="pak-buy-box__gallery-item">
           {%- if section.settings.gallery_image_1 -%}
             {{ section.settings.gallery_image_1 | image_url: width: 300 | image_tag: loading: 'lazy', sizes: '132px', class: 'pak-buy-box__gallery-image' }}
@@ -59,7 +60,7 @@
           {%- endif -%}
         </div>
       </div>
-    </scroll-hint>
+    </div>
 
     {%- if section.settings.offer_heading != blank -%}
       <h3 class="pak-buy-box__offer-heading">{{ section.settings.offer_heading }}</h3>
@@ -94,14 +95,16 @@
     </div>
 
     <div class="pak-buy-box__price-panel">
-      <p class="pak-buy-box__price-panel-discount" ref="discountLine" hidden></p>
-      <div class="pak-buy-box__price-panel-row">
-        <span class="pak-buy-box__price-panel-unit" ref="unitPriceText">{{ initial_unit_price | times: 100 | round | money }}</span>
-        <span class="pak-buy-box__price-panel-suffix"> per tub</span>
+      <div class="pak-buy-box__price-panel-main">
+        <p class="pak-buy-box__price-panel-discount" ref="discountLine" hidden></p>
+        <div class="pak-buy-box__price-panel-row">
+          <span class="pak-buy-box__price-panel-unit" ref="unitPriceText">{{ initial_unit_price | times: 100 | round | money }}</span>
+          <span class="pak-buy-box__price-panel-suffix"> per tub</span>
+        </div>
+        <p class="pak-buy-box__price-panel-per-day">
+          ~<span ref="perDayText">{{ 0 | money }}</span> per day
+        </p>
       </div>
-      <p class="pak-buy-box__price-panel-per-day">
-        ~<span ref="perDayText">{{ 0 | money }}</span> per day
-      </p>
       <div class="pak-buy-box__price-panel-total">
         <span>Total today</span>
         <strong ref="totalText">{{ 0 | money }}</strong>
@@ -137,9 +140,7 @@
       </div>
     </div>
 
-    {%- if section.settings.nutrition_label_url != blank -%}
-      <a href="{{ section.settings.nutrition_label_url }}" class="pak-buy-box__nutrition-link">View Nutrition Label</a>
-    {%- endif -%}
+    <a href="{{ section.settings.nutrition_label_url | default: '#' }}" class="pak-buy-box__nutrition-link">View Nutrition Label</a>
 
     <a href="{{ section.settings.cta_link }}" class="pak-buy-box__cta">{{ section.settings.cta_label }}</a>
   </div>
@@ -164,7 +165,7 @@
   }
 
   .pak-buy-box__heading {
-    margin: 0;
+    margin: 0 0 8px;
     font-family: var(--font-h2--family, var(--font-h1--family));
     font-size: 22px;
   }
@@ -172,6 +173,12 @@
   .pak-buy-box__gallery {
     width: 100%;
     overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .pak-buy-box__gallery::-webkit-scrollbar {
+    display: none;
   }
 
   .pak-buy-box__gallery-track {
@@ -189,10 +196,23 @@
     background: var(--color-border, rgba(0, 0, 0, 0.04));
   }
 
-  .pak-buy-box__gallery-item--main {
-    width: 260px;
-    aspect-ratio: 350 / 220;
+  .pak-buy-box__main-photo {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 62.857%;
     border-radius: 14px;
+    overflow: clip;
+    background: var(--color-border, rgba(0, 0, 0, 0.04));
+  }
+
+  .pak-buy-box__main-photo-image {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .pak-buy-box__gallery-caption {
@@ -211,6 +231,7 @@
   }
 
   .pak-buy-box__gallery-item:has(.pak-buy-box__gallery-image--placeholder),
+  .pak-buy-box__main-photo:has(.pak-buy-box__gallery-image--placeholder),
   .pak-buy-box__gift-item:has(.pak-buy-box__gift-image--placeholder) {
     background: #ece7db;
   }
@@ -246,11 +267,15 @@
   .pak-buy-box__toggle-option {
     flex: 1;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 10px;
     border-radius: 999px;
     font-family: var(--font-body--family);
     font-size: 12.5px;
     font-weight: 700;
+    text-align: center;
     cursor: pointer;
     color: var(--color-foreground-subdued, var(--color-foreground));
   }
@@ -277,11 +302,19 @@
   }
 
   .pak-buy-box__price-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
     width: 100%;
     padding: 16px;
     border-radius: 14px;
     background: var(--pak-color-panel-background, #ffefcd);
     text-align: left;
+  }
+
+  .pak-buy-box__price-panel-main {
+    min-width: 0;
   }
 
   .pak-buy-box__price-panel-discount {
@@ -319,11 +352,11 @@
 
   .pak-buy-box__price-panel-total {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--color-border);
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+    gap: 2px;
+    text-align: right;
     font-family: var(--font-body--family);
     font-size: 12px;
   }
@@ -334,7 +367,9 @@
   }
 
   .pak-buy-box__gifts-line {
+    width: 100%;
     margin: 0;
+    text-align: left;
     font-family: var(--font-body--family);
     font-size: 13px;
     font-weight: 700;

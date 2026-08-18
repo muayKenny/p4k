@@ -26,7 +26,7 @@
 </label>
 
 {% stylesheet %}
-  .pak-buy-box__tier {
+  .pak-buy-box__tiers .pak-buy-box__tier {
     position: relative;
     display: block;
     cursor: pointer;
@@ -46,6 +46,8 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 10px 4px;
     border-radius: 12px;
     background: var(--pak-color-tier-background, #ffefcd);
@@ -60,11 +62,12 @@
 
   .pak-buy-box__tier-badge {
     position: absolute;
-    top: -10px;
+    top: -9px;
     left: 50%;
     translate: -50% 0;
-    padding: 3px 8px;
+    padding: 2px 8px;
     border-radius: 999px;
+    line-height: 1;
     white-space: nowrap;
     font-family: var(--font-body--family);
     font-size: 8px;
