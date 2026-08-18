@@ -1,0 +1,146 @@
+{% liquid
+  assign one_time_cents = block.settings.price_one_time | times: 100 | round
+  assign subscribe_cents = block.settings.price_subscribe | times: 100 | round
+%}
+
+<label class="pak-buy-box__tier" {{ block.shopify_attributes }}>
+  <input
+    type="radio"
+    ref="tierInputs[]"
+    name="pak-buy-box-tier-{{ section.id }}"
+    value="{{ block.id }}"
+    class="pak-buy-box__tier-input"
+    data-quantity="{{ block.settings.quantity_number }}"
+    data-price-onetime-cents="{{ one_time_cents }}"
+    data-price-subscribe-cents="{{ subscribe_cents }}"
+    on:change="/updatePriceSummary"
+    {% if block.settings.default_selected %}checked{% endif %}
+  >
+  <span class="pak-buy-box__tier-content">
+    {%- if block.settings.badge_text != blank -%}
+      <span class="pak-buy-box__tier-badge">{{ block.settings.badge_text }}</span>
+    {%- endif -%}
+    <span class="pak-buy-box__tier-quantity">{{ block.settings.quantity_number }}</span>
+    <span class="pak-buy-box__tier-label">{{ block.settings.quantity_label }}</span>
+  </span>
+</label>
+
+{% stylesheet %}
+  .pak-buy-box__tier {
+    position: relative;
+    display: block;
+    cursor: pointer;
+  }
+
+  .pak-buy-box__tier-input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .pak-buy-box__tier-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 10px 4px;
+    border-radius: 12px;
+    background: var(--pak-color-tier-background, #ffefcd);
+    color: var(--color-foreground);
+    text-align: center;
+  }
+
+  .pak-buy-box__tier:has(:checked) .pak-buy-box__tier-content {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .pak-buy-box__tier-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    translate: -50% 0;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-family: var(--font-body--family);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-background);
+    background: var(--pak-color-accent, #9c7a52);
+  }
+
+  .pak-buy-box__tier-quantity {
+    font-family: var(--font-body--family);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .pak-buy-box__tier-label {
+    font-family: var(--font-body--family);
+    font-size: 10px;
+    opacity: 0.85;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Buy box tier",
+  "settings": [
+    {
+      "type": "number",
+      "id": "quantity_number",
+      "label": "Quantity (tubs)",
+      "default": 1
+    },
+    {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Quantity label",
+      "default": "tub"
+    },
+    {
+      "type": "number",
+      "id": "price_one_time",
+      "label": "One-time price per tub (USD)",
+      "default": 39.9
+    },
+    {
+      "type": "number",
+      "id": "price_subscribe",
+      "label": "Subscribe & Save price per tub (USD)",
+      "default": 33.9
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text (optional)",
+      "info": "e.g. MOST POPULAR"
+    },
+    {
+      "type": "checkbox",
+      "id": "default_selected",
+      "label": "Selected by default",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Buy box tier",
+      "category": "t:categories.basic",
+      "settings": {
+        "quantity_number": 1,
+        "quantity_label": "tub",
+        "price_one_time": 39.9,
+        "price_subscribe": 33.9
+      }
+    }
+  ]
+}
+{% endschema %}

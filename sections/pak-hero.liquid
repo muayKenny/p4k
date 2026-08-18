@@ -1,5 +1,5 @@
 <div
-  class="pak-hero"
+  class="pak-hero spacing-style"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
   <div class="pak-hero__inner">
@@ -45,6 +45,7 @@
 
 {% stylesheet %}
   .pak-hero {
+    display: block;
     background: var(--color-background);
     color: var(--color-foreground);
   }
@@ -107,7 +108,7 @@
     font-family: var(--font-body--family);
     font-size: 13px;
     font-weight: 700;
-    color: var(--pak-color-accent, var(--color-foreground));
+    color: var(--pak-color-accent, #9c7a52);
   }
 
   .pak-hero__trust-icons {

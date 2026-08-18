@@ -1,0 +1,560 @@
+{% liquid
+  assign default_tier = section.blocks.first
+  for block in section.blocks
+    if block.settings.default_selected
+      assign default_tier = block
+      break
+    endif
+  endfor
+
+  assign initial_unit_price = 0
+  if default_tier
+    assign initial_unit_price = default_tier.settings.price_subscribe
+  endif
+%}
+
+<pak-buy-box-component
+  class="pak-buy-box spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-money-format="{{ shop.money_format }}"
+  data-currency="{{ shop.currency }}"
+>
+  <div class="pak-buy-box__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="pak-buy-box__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <scroll-hint class="pak-buy-box__gallery">
+      <div class="pak-buy-box__gallery-track">
+        <div class="pak-buy-box__gallery-item pak-buy-box__gallery-item--main">
+          {%- if section.settings.main_image -%}
+            {{ section.settings.main_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 400px, 90vw', class: 'pak-buy-box__gallery-image' }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'pak-buy-box__gallery-image pak-buy-box__gallery-image--placeholder' }}
+            <span class="pak-buy-box__gallery-caption">Main photo</span>
+          {%- endif -%}
+        </div>
+        <div class="pak-buy-box__gallery-item">
+          {%- if section.settings.gallery_image_1 -%}
+            {{ section.settings.gallery_image_1 | image_url: width: 300 | image_tag: loading: 'lazy', sizes: '132px', class: 'pak-buy-box__gallery-image' }}
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'pak-buy-box__gallery-image pak-buy-box__gallery-image--placeholder' }}
+            <span class="pak-buy-box__gallery-caption">Photo 2</span>
+          {%- endif -%}
+        </div>
+        <div class="pak-buy-box__gallery-item">
+          {%- if section.settings.gallery_image_2 -%}
+            {{ section.settings.gallery_image_2 | image_url: width: 300 | image_tag: loading: 'lazy', sizes: '132px', class: 'pak-buy-box__gallery-image' }}
+          {%- else -%}
+            {{ 'product-3' | placeholder_svg_tag: 'pak-buy-box__gallery-image pak-buy-box__gallery-image--placeholder' }}
+            <span class="pak-buy-box__gallery-caption">Photo 3</span>
+          {%- endif -%}
+        </div>
+        <div class="pak-buy-box__gallery-item">
+          {%- if section.settings.gallery_image_3 -%}
+            {{ section.settings.gallery_image_3 | image_url: width: 300 | image_tag: loading: 'lazy', sizes: '132px', class: 'pak-buy-box__gallery-image' }}
+          {%- else -%}
+            {{ 'product-4' | placeholder_svg_tag: 'pak-buy-box__gallery-image pak-buy-box__gallery-image--placeholder' }}
+            <span class="pak-buy-box__gallery-caption">Photo 4</span>
+          {%- endif -%}
+        </div>
+      </div>
+    </scroll-hint>
+
+    {%- if section.settings.offer_heading != blank -%}
+      <h3 class="pak-buy-box__offer-heading">{{ section.settings.offer_heading }}</h3>
+    {%- endif -%}
+
+    <div class="pak-buy-box__toggle" role="radiogroup" aria-label="Purchase option">
+      <label class="pak-buy-box__toggle-option">
+        <input
+          type="radio"
+          ref="purchaseInputs[]"
+          name="pak-buy-box-purchase-{{ section.id }}"
+          value="subscribe"
+          on:change="/updatePriceSummary"
+          checked
+        >
+        <span>Subscribe &amp; Save</span>
+      </label>
+      <label class="pak-buy-box__toggle-option">
+        <input
+          type="radio"
+          ref="purchaseInputs[]"
+          name="pak-buy-box-purchase-{{ section.id }}"
+          value="onetime"
+          on:change="/updatePriceSummary"
+        >
+        <span>One-Time</span>
+      </label>
+    </div>
+
+    <div class="pak-buy-box__tiers">
+      {% content_for 'blocks' %}
+    </div>
+
+    <div class="pak-buy-box__price-panel">
+      <p class="pak-buy-box__price-panel-discount" ref="discountLine" hidden></p>
+      <div class="pak-buy-box__price-panel-row">
+        <span class="pak-buy-box__price-panel-unit" ref="unitPriceText">{{ initial_unit_price | times: 100 | round | money }}</span>
+        <span class="pak-buy-box__price-panel-suffix"> per tub</span>
+      </div>
+      <p class="pak-buy-box__price-panel-per-day">
+        ~<span ref="perDayText">{{ 0 | money }}</span> per day
+      </p>
+      <div class="pak-buy-box__price-panel-total">
+        <span>Total today</span>
+        <strong ref="totalText">{{ 0 | money }}</strong>
+      </div>
+    </div>
+
+    <p class="pak-buy-box__gifts-line" ref="freeGiftsLine">{{ section.settings.gift_line_text }}</p>
+
+    <div class="pak-buy-box__gifts" ref="freeGiftsImages">
+      <div class="pak-buy-box__gift-item">
+        {%- if section.settings.gift_image_1 -%}
+          {{ section.settings.gift_image_1 | image_url: width: 220 | image_tag: loading: 'lazy', sizes: '110px', class: 'pak-buy-box__gift-image' }}
+        {%- else -%}
+          {{ 'product-5' | placeholder_svg_tag: 'pak-buy-box__gift-image pak-buy-box__gift-image--placeholder' }}
+          <span class="pak-buy-box__gallery-caption">Free gift 1</span>
+        {%- endif -%}
+      </div>
+      <div class="pak-buy-box__gift-item">
+        {%- if section.settings.gift_image_2 -%}
+          {{ section.settings.gift_image_2 | image_url: width: 220 | image_tag: loading: 'lazy', sizes: '110px', class: 'pak-buy-box__gift-image' }}
+        {%- else -%}
+          {{ 'product-6' | placeholder_svg_tag: 'pak-buy-box__gift-image pak-buy-box__gift-image--placeholder' }}
+          <span class="pak-buy-box__gallery-caption">Free gift 2</span>
+        {%- endif -%}
+      </div>
+      <div class="pak-buy-box__gift-item">
+        {%- if section.settings.gift_image_3 -%}
+          {{ section.settings.gift_image_3 | image_url: width: 220 | image_tag: loading: 'lazy', sizes: '110px', class: 'pak-buy-box__gift-image' }}
+        {%- else -%}
+          {{ 'collection-1' | placeholder_svg_tag: 'pak-buy-box__gift-image pak-buy-box__gift-image--placeholder' }}
+          <span class="pak-buy-box__gallery-caption">Free gift 3</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.nutrition_label_url != blank -%}
+      <a href="{{ section.settings.nutrition_label_url }}" class="pak-buy-box__nutrition-link">View Nutrition Label</a>
+    {%- endif -%}
+
+    <a href="{{ section.settings.cta_link }}" class="pak-buy-box__cta">{{ section.settings.cta_label }}</a>
+  </div>
+</pak-buy-box-component>
+
+{% stylesheet %}
+  .pak-buy-box {
+    display: block;
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .pak-buy-box__inner {
+    max-width: 480px;
+    margin-inline: auto;
+    padding-inline: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .pak-buy-box__heading {
+    margin: 0;
+    font-family: var(--font-h2--family, var(--font-h1--family));
+    font-size: 22px;
+  }
+
+  .pak-buy-box__gallery {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .pak-buy-box__gallery-track {
+    display: flex;
+    gap: 6px;
+  }
+
+  .pak-buy-box__gallery-item {
+    position: relative;
+    flex: 0 0 auto;
+    width: 132px;
+    aspect-ratio: 132 / 88;
+    border-radius: 8px;
+    overflow: clip;
+    background: var(--color-border, rgba(0, 0, 0, 0.04));
+  }
+
+  .pak-buy-box__gallery-item--main {
+    width: 260px;
+    aspect-ratio: 350 / 220;
+    border-radius: 14px;
+  }
+
+  .pak-buy-box__gallery-caption {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    translate: -50% 0;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-family: var(--font-body--family);
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .pak-buy-box__gallery-item:has(.pak-buy-box__gallery-image--placeholder),
+  .pak-buy-box__gift-item:has(.pak-buy-box__gift-image--placeholder) {
+    background: #ece7db;
+  }
+
+  .pak-buy-box__gallery-image--placeholder,
+  .pak-buy-box__gift-image--placeholder {
+    color: #a8a08c;
+    opacity: 0.7;
+  }
+
+  .pak-buy-box__gallery-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pak-buy-box__offer-heading {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .pak-buy-box__toggle {
+    display: flex;
+    width: 100%;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--pak-color-toggle-track, #ffefcd);
+  }
+
+  .pak-buy-box__toggle-option {
+    flex: 1;
+    position: relative;
+    padding: 10px;
+    border-radius: 999px;
+    font-family: var(--font-body--family);
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--color-foreground-subdued, var(--color-foreground));
+  }
+
+  .pak-buy-box__toggle-option:has(:checked) {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .pak-buy-box__toggle-option input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  .pak-buy-box__tiers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+    padding-block-start: 6px;
+  }
+
+  .pak-buy-box__price-panel {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    background: var(--pak-color-panel-background, #ffefcd);
+    text-align: left;
+  }
+
+  .pak-buy-box__price-panel-discount {
+    margin: 0 0 4px;
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    color: var(--color-foreground-subdued, var(--color-foreground));
+  }
+
+  .pak-buy-box__price-panel-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .pak-buy-box__price-panel-unit {
+    font-family: var(--font-h1--family);
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  .pak-buy-box__price-panel-suffix {
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    color: var(--color-foreground-subdued, var(--color-foreground));
+  }
+
+  .pak-buy-box__price-panel-per-day {
+    margin: 4px 0 0;
+    font-family: var(--font-body--family);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--pak-color-accent, #9c7a52);
+  }
+
+  .pak-buy-box__price-panel-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-body--family);
+    font-size: 12px;
+  }
+
+  .pak-buy-box__price-panel-total strong {
+    font-size: 16px;
+    color: var(--pak-color-accent, #9c7a52);
+  }
+
+  .pak-buy-box__gifts-line {
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .pak-buy-box__gifts {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .pak-buy-box__gift-item {
+    position: relative;
+    flex: 1;
+    aspect-ratio: 111 / 74;
+    border-radius: 6px;
+    overflow: clip;
+    background: var(--color-border, rgba(0, 0, 0, 0.04));
+  }
+
+  .pak-buy-box__gift-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pak-buy-box__nutrition-link {
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--pak-color-accent, #9c7a52);
+    text-decoration: underline;
+  }
+
+  .pak-buy-box__cta {
+    display: block;
+    width: 100%;
+    padding: 17px;
+    border-radius: 999px;
+    background: var(--color-foreground);
+    color: var(--color-background);
+    font-family: var(--font-body--family);
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+  }
+{% endstylesheet %}
+
+<script src="{{ 'pak-buy-box.js' | asset_url }}" type="module"></script>
+
+{% schema %}
+{
+  "name": "PAK Buy Box",
+  "class": "pak-buy-box-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Buy Now to Save Up to 35% Off!"
+    },
+    {
+      "type": "header",
+      "content": "Photos"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main photo"
+    },
+    {
+      "type": "image_picker",
+      "id": "gallery_image_1",
+      "label": "Photo 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "gallery_image_2",
+      "label": "Photo 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "gallery_image_3",
+      "label": "Photo 4"
+    },
+    {
+      "type": "header",
+      "content": "Offer"
+    },
+    {
+      "type": "text",
+      "id": "offer_heading",
+      "label": "Offer heading",
+      "default": "Choose Your Offer"
+    },
+    {
+      "type": "header",
+      "content": "Free gifts (shown on Subscribe & Save)"
+    },
+    {
+      "type": "text",
+      "id": "gift_line_text",
+      "label": "Free gifts line",
+      "default": "Your subscription includes free gifts today!"
+    },
+    {
+      "type": "image_picker",
+      "id": "gift_image_1",
+      "label": "Free gift 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "gift_image_2",
+      "label": "Free gift 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "gift_image_3",
+      "label": "Free gift 3"
+    },
+    {
+      "type": "header",
+      "content": "Footer"
+    },
+    {
+      "type": "url",
+      "id": "nutrition_label_url",
+      "label": "Nutrition label link"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA label",
+      "default": "Start Risk-Free"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pak-buy-box-tier"
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "PAK Buy Box",
+      "category": "t:categories.storytelling",
+      "blocks": {
+        "tier_1": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 1,
+            "quantity_label": "tub",
+            "price_one_time": 39.99,
+            "price_subscribe": 35.99
+          }
+        },
+        "tier_2": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 2,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 30.99,
+            "default_selected": true
+          }
+        },
+        "tier_3": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 3,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 27.99
+          }
+        },
+        "tier_4": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 4,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 24.99,
+            "badge_text": "MOST POPULAR"
+          }
+        }
+      },
+      "block_order": ["tier_1", "tier_2", "tier_3", "tier_4"]
+    }
+  ]
+}
+{% endschema %}

@@ -274,10 +274,56 @@
       },
       "block_order": ["faq_1", "faq_2", "faq_3", "faq_4", "faq_5"],
       "settings": {}
+    },
+    "pak_buy_box_1": {
+      "type": "pak-buy-box",
+      "blocks": {
+        "tier_1": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 1,
+            "quantity_label": "tub",
+            "price_one_time": 39.99,
+            "price_subscribe": 35.99
+          }
+        },
+        "tier_2": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 2,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 30.99,
+            "default_selected": true
+          }
+        },
+        "tier_3": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 3,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 27.99
+          }
+        },
+        "tier_4": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 4,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 24.99,
+            "badge_text": "MOST POPULAR"
+          }
+        }
+      },
+      "block_order": ["tier_1", "tier_2", "tier_3", "tier_4"],
+      "settings": {}
     }
   },
   "order": [
     "pak_hero_1",
+    "pak_buy_box_1",
     "product_list_fa6P9H",
     "pak_faq_1"
   ]
