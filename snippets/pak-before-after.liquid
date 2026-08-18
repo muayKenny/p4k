@@ -1,0 +1,128 @@
+{%- doc -%}
+  Renders a static side-by-side before/after image comparison, with an optional
+  floating promo badge overlapping the bottom edge. Above-the-fold hero content,
+  so images render eager/high-priority for LCP.
+
+  @param {image} [before_image] - The "before" image
+  @param {string} [before_label] - Badge label for the before image
+  @param {image} [after_image] - The "after" image
+  @param {string} [after_label] - Badge label for the after image
+  @param {string} [badge_text] - Optional floating promo badge text
+
+  @example
+  {% render 'pak-before-after',
+    before_image: section.settings.before_image,
+    before_label: section.settings.before_label,
+    after_image: section.settings.after_image,
+    after_label: section.settings.after_label,
+    badge_text: section.settings.promo_badge_text
+  %}
+{%- enddoc -%}
+
+<div class="pak-before-after">
+  <div class="pak-before-after__grid">
+    <div class="pak-before-after__item">
+      {%- if before_image -%}
+        {{
+          before_image
+          | image_url: width: 400
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            decoding: 'sync',
+            sizes: '(min-width: 750px) 300px, 45vw',
+            class: 'pak-before-after__image'
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'pak-before-after__image pak-before-after__image--placeholder' }}
+      {%- endif -%}
+      {%- if before_label != blank -%}
+        <span class="pak-before-after__tag">{{ before_label }}</span>
+      {%- endif -%}
+    </div>
+    <div class="pak-before-after__item">
+      {%- if after_image -%}
+        {{
+          after_image
+          | image_url: width: 400
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            decoding: 'sync',
+            sizes: '(min-width: 750px) 300px, 45vw',
+            class: 'pak-before-after__image'
+        }}
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'pak-before-after__image pak-before-after__image--placeholder' }}
+      {%- endif -%}
+      {%- if after_label != blank -%}
+        <span class="pak-before-after__tag pak-before-after__tag--after">{{ after_label }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if badge_text != blank -%}
+    <span class="pak-before-after__badge">{{ badge_text }}</span>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .pak-before-after {
+    position: relative;
+  }
+
+  .pak-before-after__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    border-radius: 16px;
+    overflow: clip;
+  }
+
+  .pak-before-after__item {
+    position: relative;
+  }
+
+  .pak-before-after__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 174 / 210;
+  }
+
+  .pak-before-after__tag {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-family: var(--font-body--family);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-background);
+    background: var(--pak-color-tag-before, rgba(0, 0, 0, 0.75));
+  }
+
+  .pak-before-after__tag--after {
+    background: var(--pak-color-tag-after, var(--color-foreground));
+  }
+
+  .pak-before-after__badge {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    translate: -50% 0;
+    padding: 8px 16px;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-background);
+    background: var(--pak-color-foreground, var(--color-foreground));
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
+  }
+{% endstylesheet %}
