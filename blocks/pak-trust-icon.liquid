@@ -2,12 +2,23 @@
 
 <div class="pak-trust-icon" {{ block.shopify_attributes }}>
   <span class="pak-trust-icon__badge">
-    {% render 'icon-or-image',
-      icon: block_settings.icon,
-      image_upload: block_settings.image_upload,
-      width: block_settings.width,
-      class_name: 'pak-trust-icon__media'
-    %}
+    <span class="pak-trust-icon__media" style="width: {{ block_settings.width }}px; height: {{ block_settings.width }}px;">
+      {%- case block_settings.icon -%}
+        {%- when 'pak_spine' -%}
+          {% render 'pak-icon-spine' %}
+        {%- when 'pak_vet' -%}
+          {% render 'pak-icon-vet' %}
+        {%- when 'pak_mushroom' -%}
+          {% render 'pak-icon-mushroom' %}
+        {%- else -%}
+          {% render 'icon-or-image',
+            icon: block_settings.icon,
+            image_upload: block_settings.image_upload,
+            width: block_settings.width,
+            class_name: 'pak-trust-icon__media-fallback'
+          %}
+      {%- endcase -%}
+    </span>
   </span>
   <span class="pak-trust-icon__label">{{ block_settings.label }}</span>
 </div>
@@ -32,8 +43,15 @@
   }
 
   .pak-trust-icon__media {
-    width: 18px;
-    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-foreground);
+  }
+
+  .pak-trust-icon__media-fallback {
+    width: 100%;
+    height: 100%;
   }
 
   .pak-trust-icon__label {
@@ -54,6 +72,9 @@
       "id": "icon",
       "label": "Icon",
       "options": [
+        { "value": "pak_spine", "label": "Spine (custom)" },
+        { "value": "pak_vet", "label": "Vet shield (custom)" },
+        { "value": "pak_mushroom", "label": "Lab flask (custom)" },
         { "value": "none", "label": "None" },
         { "value": "heart", "label": "Heart" },
         { "value": "check_box", "label": "Check" },
@@ -65,7 +86,7 @@
         { "value": "eye", "label": "Eye" },
         { "value": "paw_print", "label": "Paw print" }
       ],
-      "default": "heart"
+      "default": "pak_spine"
     },
     {
       "type": "image_picker",
