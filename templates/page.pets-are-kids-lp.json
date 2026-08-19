@@ -6,48 +6,76 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "pak_hero_1": {
       "type": "pak-hero",
       "blocks": {
+        "trust_1": {
+          "type": "pak-trust-icon",
+          "settings": {
+            "icon": "pak_spine",
+            "width": 18,
+            "label": "Supports Nerve & Spine Health"
+          },
+          "blocks": {}
+        },
+        "trust_2": {
+          "type": "pak-trust-icon",
+          "settings": {
+            "icon": "pak_vet",
+            "width": 18,
+            "label": "Vet-Formulated"
+          },
+          "blocks": {}
+        },
+        "trust_3": {
+          "type": "pak-trust-icon",
+          "settings": {
+            "icon": "pak_mushroom",
+            "width": 18,
+            "label": "7 Clinically-Studied Mushrooms"
+          },
+          "blocks": {}
+        },
         "hero_cta": {
           "type": "button",
           "static": true,
           "settings": {
             "label": "Start Protecting My Dog's Spine",
             "link": "shopify://collections/all",
+            "open_in_new_tab": false,
             "style_class": "button",
+            "custom_button_background": "{{ settings.color_palette.foreground }}",
+            "custom_button_text": "{{ settings.color_palette.background }}",
+            "custom_button_border": "{{ settings.color_palette.background }}",
+            "link_text_color": "",
             "width": "custom",
             "custom_width": 100,
             "width_mobile": "custom",
             "custom_width_mobile": 100
-          }
-        },
-        "trust_1": {
-          "type": "pak-trust-icon",
-          "settings": {
-            "icon": "pak_spine",
-            "label": "Supports Nerve & Spine Health"
-          }
-        },
-        "trust_2": {
-          "type": "pak-trust-icon",
-          "settings": {
-            "icon": "pak_vet",
-            "label": "Vet-Formulated"
-          }
-        },
-        "trust_3": {
-          "type": "pak-trust-icon",
-          "settings": {
-            "icon": "pak_mushroom",
-            "label": "7 Clinically-Studied Mushrooms"
-          }
+          },
+          "blocks": {}
         }
       },
-      "block_order": ["trust_1", "trust_2", "trust_3"],
-      "settings": {}
+      "block_order": [
+        "trust_1",
+        "trust_2",
+        "trust_3"
+      ],
+      "settings": {
+        "eyebrow_text": "PETS ARE KIDS TOO",
+        "trust_line": "Trusted by 10,000+ Dog Parents ⭐⭐⭐⭐⭐",
+        "heading": "A Natural Way to Protect Your Dog's Spine",
+        "subheading": "Slow DM's progression and restore mobility without surgery or side effects.",
+        "before_label": "BEFORE",
+        "after_label": "AFTER",
+        "promo_badge_text": "35% Off + Free Gifts",
+        "guarantee_text": "90-Day Money-Back Guarantee",
+        "padding-block-start": 32,
+        "padding-block-end": 40
+      }
     },
     "pak_buy_box_1": {
       "type": "pak-buy-box",
@@ -57,89 +85,139 @@
           "settings": {
             "quantity_number": 1,
             "quantity_label": "tub",
-            "price_one_time": 39.99,
-            "price_subscribe": 35.99
-          }
+            "price_one_time": 40.0,
+            "price_subscribe": 36.0,
+            "badge_text": "",
+            "default_selected": false
+          },
+          "blocks": {}
         },
         "tier_2": {
           "type": "pak-buy-box-tier",
           "settings": {
             "quantity_number": 2,
             "quantity_label": "tubs",
-            "price_one_time": 39.99,
-            "price_subscribe": 30.99,
+            "price_one_time": 40.0,
+            "price_subscribe": 31.0,
+            "badge_text": "",
             "default_selected": true
-          }
+          },
+          "blocks": {}
         },
         "tier_3": {
           "type": "pak-buy-box-tier",
           "settings": {
             "quantity_number": 3,
             "quantity_label": "tubs",
-            "price_one_time": 39.99,
-            "price_subscribe": 27.99
-          }
+            "price_one_time": 40.0,
+            "price_subscribe": 28.0,
+            "badge_text": "",
+            "default_selected": false
+          },
+          "blocks": {}
         },
         "tier_4": {
           "type": "pak-buy-box-tier",
           "settings": {
             "quantity_number": 4,
             "quantity_label": "tubs",
-            "price_one_time": 39.99,
-            "price_subscribe": 24.99,
-            "badge_text": "MOST POPULAR"
-          }
+            "price_one_time": 40.0,
+            "price_subscribe": 25.0,
+            "badge_text": "MOST POPULAR",
+            "default_selected": false
+          },
+          "blocks": {}
         }
       },
-      "block_order": ["tier_1", "tier_2", "tier_3", "tier_4"],
-      "settings": {}
+      "block_order": [
+        "tier_1",
+        "tier_2",
+        "tier_3",
+        "tier_4"
+      ],
+      "settings": {
+        "heading": "Buy Now to Save Up to 35% Off!",
+        "offer_heading": "Choose Your Offer",
+        "gift_line_text": "Your subscription includes free gifts today!",
+        "nutrition_label_url": "",
+        "cta_label": "Start Risk-Free",
+        "cta_link": "",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
     },
-    "pak_faq_1": {
+    "pak_faq_rtHNtj": {
       "type": "pak-faq",
       "blocks": {
-        "faq_1": {
+        "pak_faq_item_BJRApX": {
+          "type": "pak-faq-item",
+          "name": "FAQ item",
+          "settings": {
+            "question": "Question",
+            "answer": "Answer"
+          },
+          "blocks": {}
+        },
+        "pak_faq_item_EfyLUw": {
           "type": "pak-faq-item",
           "settings": {
             "question": "How many chews should I give my dog?",
             "answer": "Most dogs do well with 1–2 chews daily, based on weight. Full dosing guidance is included with every order."
-          }
+          },
+          "blocks": {}
         },
-        "faq_2": {
+        "pak_faq_item_WH48kc": {
           "type": "pak-faq-item",
           "settings": {
             "question": "How long until I see results?",
             "answer": "Many pet parents notice a difference within 4–6 weeks, though timelines vary depending on your dog's condition and history."
-          }
+          },
+          "blocks": {}
         },
-        "faq_3": {
+        "pak_faq_item_LReVXV": {
           "type": "pak-faq-item",
           "settings": {
             "question": "Is it safe with other medications?",
             "answer": "Our formula is generally well-tolerated alongside most medications, but we recommend checking with your vet if your dog is on prescription treatment."
-          }
+          },
+          "blocks": {}
         },
-        "faq_4": {
+        "pak_faq_item_jcchwU": {
           "type": "pak-faq-item",
           "settings": {
             "question": "What if it doesn't work for my dog?",
             "answer": "You're covered by our 90-Day Money-Back Guarantee — if you don't see results, we'll refund you, no questions asked."
-          }
+          },
+          "blocks": {}
         },
-        "faq_5": {
+        "pak_faq_item_LdtEhx": {
           "type": "pak-faq-item",
           "settings": {
             "question": "What breeds is this formulated for?",
             "answer": "It's formulated for all dog breeds and sizes, with dosing calibrated by weight."
-          }
+          },
+          "blocks": {}
         }
       },
-      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4", "faq_5"],
-      "settings": {}
+      "block_order": [
+        "pak_faq_item_BJRApX",
+        "pak_faq_item_EfyLUw",
+        "pak_faq_item_WH48kc",
+        "pak_faq_item_LReVXV",
+        "pak_faq_item_jcchwU",
+        "pak_faq_item_LdtEhx"
+      ],
+      "name": "PAK FAQ",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "padding-block-start": 40,
+        "padding-block-end": 40
+      }
     }
   },
   "order": [
     "pak_hero_1",
     "pak_buy_box_1",
-    "pak_faq_1"
+    "pak_faq_rtHNtj"
   ]
 }
