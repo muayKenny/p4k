@@ -1,0 +1,145 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */{
+  "sections": {
+    "pak_hero_1": {
+      "type": "pak-hero",
+      "blocks": {
+        "hero_cta": {
+          "type": "button",
+          "static": true,
+          "settings": {
+            "label": "Start Protecting My Dog's Spine",
+            "link": "shopify://collections/all",
+            "style_class": "button",
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "custom",
+            "custom_width_mobile": 100
+          }
+        },
+        "trust_1": {
+          "type": "pak-trust-icon",
+          "settings": {
+            "icon": "pak_spine",
+            "label": "Supports Nerve & Spine Health"
+          }
+        },
+        "trust_2": {
+          "type": "pak-trust-icon",
+          "settings": {
+            "icon": "pak_vet",
+            "label": "Vet-Formulated"
+          }
+        },
+        "trust_3": {
+          "type": "pak-trust-icon",
+          "settings": {
+            "icon": "pak_mushroom",
+            "label": "7 Clinically-Studied Mushrooms"
+          }
+        }
+      },
+      "block_order": ["trust_1", "trust_2", "trust_3"],
+      "settings": {}
+    },
+    "pak_buy_box_1": {
+      "type": "pak-buy-box",
+      "blocks": {
+        "tier_1": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 1,
+            "quantity_label": "tub",
+            "price_one_time": 39.99,
+            "price_subscribe": 35.99
+          }
+        },
+        "tier_2": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 2,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 30.99,
+            "default_selected": true
+          }
+        },
+        "tier_3": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 3,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 27.99
+          }
+        },
+        "tier_4": {
+          "type": "pak-buy-box-tier",
+          "settings": {
+            "quantity_number": 4,
+            "quantity_label": "tubs",
+            "price_one_time": 39.99,
+            "price_subscribe": 24.99,
+            "badge_text": "MOST POPULAR"
+          }
+        }
+      },
+      "block_order": ["tier_1", "tier_2", "tier_3", "tier_4"],
+      "settings": {}
+    },
+    "pak_faq_1": {
+      "type": "pak-faq",
+      "blocks": {
+        "faq_1": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "How many chews should I give my dog?",
+            "answer": "Most dogs do well with 1–2 chews daily, based on weight. Full dosing guidance is included with every order."
+          }
+        },
+        "faq_2": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "How long until I see results?",
+            "answer": "Many pet parents notice a difference within 4–6 weeks, though timelines vary depending on your dog's condition and history."
+          }
+        },
+        "faq_3": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "Is it safe with other medications?",
+            "answer": "Our formula is generally well-tolerated alongside most medications, but we recommend checking with your vet if your dog is on prescription treatment."
+          }
+        },
+        "faq_4": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "What if it doesn't work for my dog?",
+            "answer": "You're covered by our 90-Day Money-Back Guarantee — if you don't see results, we'll refund you, no questions asked."
+          }
+        },
+        "faq_5": {
+          "type": "pak-faq-item",
+          "settings": {
+            "question": "What breeds is this formulated for?",
+            "answer": "It's formulated for all dog breeds and sizes, with dosing calibrated by weight."
+          }
+        }
+      },
+      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4", "faq_5"],
+      "settings": {}
+    }
+  },
+  "order": [
+    "pak_hero_1",
+    "pak_buy_box_1",
+    "pak_faq_1"
+  ]
+}
